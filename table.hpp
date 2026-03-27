@@ -10,7 +10,7 @@ using std::string;
 class ParseTable {
         private:
                 // non terminal and terminal is concatenated to form a string key
-                // table[key] produces a rule number (int) as a value
+                // table[key] returns a rule number (int) as a value
                 unordered_map<string,int> table;
 
                 // to iterate the table in order
