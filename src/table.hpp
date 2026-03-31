@@ -32,10 +32,11 @@ public:
                 }
         }
 
-        bool set(char non_terminal,char terminal,int ruleNo){
-                string s = std::to_string(non_terminal) + std::to_string(terminal);
+        bool set(char non_terminal, char terminal, int ruleNo) {
+                string s =
+                    std::to_string(non_terminal) + std::to_string(terminal);
                 auto v = table.find(s);
-                if(v==table.end()){
+                if (v == table.end()) {
                         return false;
                 }
                 v->second = ruleNo;
