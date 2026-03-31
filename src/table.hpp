@@ -1,5 +1,6 @@
 #ifndef PARSE_TABLE
 #define PARSE_TABLE
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -52,6 +53,21 @@ public:
                         return 0;
                 }
                 return v->second;
+        }
+
+        void printTable(){
+                //print the column headings
+                std::cout<<"  ";
+                for(auto i:terminals){
+                       std::cout<<i<<" " ;
+                }
+                //print each rows
+                for(auto i:non_terminals){
+                        std::cout<<i<<" "; 
+                        for(auto j:terminals){
+                                std::cout<<table[std::to_string(i)+std::to_string(j)]<<" ";
+                        }
+                }
         }
 };
 
