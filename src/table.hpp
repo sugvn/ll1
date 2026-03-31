@@ -42,6 +42,17 @@ public:
                 v->second = ruleNo;
                 return true;
         }
+
+        // returns 0 if no (non_terminal,terminal) pair exists
+        int get(char non_terminal, char terminal) {
+                string s =
+                    std::to_string(non_terminal) + std::to_string(terminal);
+                auto v = table.find(s);
+                if (v == table.end()) {
+                        return 0;
+                }
+                return v->second;
+        }
 };
 
 #endif
