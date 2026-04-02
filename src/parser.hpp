@@ -3,14 +3,17 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
+#include "table.hpp"
 using std::cout;
 using std::endl;
 using std::string;
 using std::unordered_map;
+using std::unordered_set;
 using std::vector;
 
-typedef struct Rule {
+typedef struct {
         char left;
         string right;
 } Rule;
@@ -19,12 +22,9 @@ class Grammar {
 public:
         unordered_map<char, vector<string>> grammars;
         char startSymbol;
-        Grammar() {}
+        Grammar(char s) { startSymbol = s; }
         bool addRule(Rule rule) {
-                if (grammars.empty())
-                        startSymbol = rule.left;
                 grammars[rule.left].push_back(rule.right);
-                cout << "hello world" << endl;
                 return true;
         }
 };
@@ -33,13 +33,18 @@ class Parser {
 public:
         Parser(string n) : name(n) {}
         bool parse(string input, Grammar g) {
+                // as of now, assume empty strings are parseable for all
+                // grammars(which is wrong)
                 if (input.empty())
                         return true;
-                int length = input.size();
-                int i = 0;
-                while (i < length) {
-                        char look = input[i];
-                        char current_nt = g.startSymbol;
+                unordered_set<char> non_terminals;
+                unordered_set<char> terminals;
+                //find all non_terminals and terminals from the grammar
+                auto &grammar = g.grammars;
+                for(auto i:grammar){
+                        non_terminals.insert(i.first);
+                        for(auto c:i.second){
+                        }
                 }
         }
 
