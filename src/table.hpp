@@ -3,9 +3,11 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using std::string;
 using std::unordered_map;
+using std::unordered_set;
 using std::vector;
 
 class ParseTable {
@@ -14,14 +16,14 @@ private:
         // table[key] returns a rule number (int) as a value
         unordered_map<string, int> table;
 
-        // to iterate the table in order
-        vector<char> non_terminals;
-        vector<char> terminals;
+        // to iterate the table
+        unordered_set<char> non_terminals;
+        unordered_set<char> terminals;
 
 public:
         // takes in all the non terminals and terminals and builds the table
         // with default value as 0
-        ParseTable(vector<char> non_terminals, vector<char> terminals) {
+        ParseTable(unordered_set<char> &non_terminals, unordered_set<char> &terminals) {
                 this->non_terminals = non_terminals;
                 this->terminals = terminals;
                 for (char n : non_terminals) {

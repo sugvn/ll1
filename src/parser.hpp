@@ -33,11 +33,7 @@ public:
 class Parser {
 public:
         Parser(string n) : name(n) {}
-        bool parse(string input, Grammar g) {
-                // as of now, assume empty strings are parseable for all
-                // grammars(which is wrong)
-                if (input.empty())
-                        return true;
+        void build(Grammar g) {
                 unordered_set<char> non_terminals;
                 unordered_set<char> terminals;
                 // find all non_terminals and terminals from the grammar
@@ -52,6 +48,9 @@ public:
                                 }
                         }
                 }
+                // build parse table
+                ParseTable table(non_terminals,terminals);
+                
         }
 
 private:
