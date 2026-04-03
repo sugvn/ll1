@@ -1,11 +1,13 @@
 #ifndef REC_PARSER
 #define REC_PARSER
+#include "table.hpp"
+#include <cctype>
 #include <iostream>
+#include <locale>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include "table.hpp"
 using std::cout;
 using std::endl;
 using std::string;
@@ -39,11 +41,13 @@ public:
                         return true;
                 unordered_set<char> non_terminals;
                 unordered_set<char> terminals;
-                //find all non_terminals and terminals from the grammar
+                // find all non_terminals and terminals from the grammar
                 auto &grammar = g.grammars;
-                for(auto i:grammar){
+                for (auto i : grammar) {
                         non_terminals.insert(i.first);
-                        for(auto c:i.second){
+                        for (auto c : i.second) {
+                                if (isupper(c))) {
+                                }
                         }
                 }
         }
