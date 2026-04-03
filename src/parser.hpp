@@ -23,10 +23,13 @@ class Grammar {
 public:
         unordered_map<char, vector<string>> grammars;
         char startSymbol;
-        Grammar(char s) { startSymbol = s; }
+        Grammar() =default;
         bool addRule(Rule rule) {
                 grammars[rule.left].push_back(rule.right);
                 return true;
+        }
+        void setStartSymbol(char c){
+                startSymbol = c;
         }
 };
 
@@ -53,6 +56,10 @@ public:
                table = ParseTable(non_terminals,terminals);
                 
         }
+
+        void printTable(){
+                table.print();
+        } 
 
 private:
         string name;

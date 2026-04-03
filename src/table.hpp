@@ -57,7 +57,7 @@ public:
                 return v->second;
         }
 
-        void printTable(){
+        void print(){
                 //print the column headings
                 std::cout<<" ";
                 for(auto i:terminals){
