@@ -3,7 +3,6 @@
 #include "table.hpp"
 #include <cctype>
 #include <iostream>
-#include <locale>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -45,8 +44,11 @@ public:
                 auto &grammar = g.grammars;
                 for (auto i : grammar) {
                         non_terminals.insert(i.first);
-                        for (auto c : i.second) {
-                                if (isupper(c))) {
+                        for (auto s : i.second) {
+                                for (auto c : s) {
+                                        bool y = std::isupper(c);
+                                        if(y) non_terminals.insert(c);
+                                        else terminals.insert(c);
                                 }
                         }
                 }
