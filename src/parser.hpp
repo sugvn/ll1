@@ -32,7 +32,8 @@ public:
 
 class Parser {
 public:
-        Parser(string n) : name(n) {}
+        Parser(string n="") : name(n) {}
+        ParseTable table;
         void build(Grammar g) {
                 unordered_set<char> non_terminals;
                 unordered_set<char> terminals;
@@ -49,7 +50,7 @@ public:
                         }
                 }
                 // build parse table
-                ParseTable table(non_terminals,terminals);
+               table = ParseTable(non_terminals,terminals);
                 
         }
 

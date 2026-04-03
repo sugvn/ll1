@@ -21,6 +21,9 @@ private:
         unordered_set<char> terminals;
 
 public:
+        // default constructor
+        ParseTable() = default;
+
         // takes in all the non terminals and terminals and builds the table
         // with default value as 0
         ParseTable(unordered_set<char> &non_terminals, unordered_set<char> &terminals) {
