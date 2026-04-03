@@ -63,6 +63,7 @@ public:
                 for(auto i:terminals){
                        std::cout<<" "<<i ;
                 }
+                std::cout<<"\n";
                 //print each rows
                 for(auto i:non_terminals){
                         std::cout<<i; 
