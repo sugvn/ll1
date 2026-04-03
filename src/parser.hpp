@@ -23,19 +23,18 @@ class Grammar {
 public:
         unordered_map<char, vector<string>> grammars;
         char startSymbol;
-        Grammar() =default;
-        bool addRule(Rule rule) {
-                grammars[rule.left].push_back(rule.right);
-                return true;
+        Grammar() = default;
+        void addRule(Rule rule) { grammars[rule.left].push_back(rule.right); }
+        void addRules(vector<Rule> rules) {
+                for (auto rule : rules)
+                        addRule(rule);
         }
-        void setStartSymbol(char c){
-                startSymbol = c;
-        }
+        void setStartSymbol(char c) { startSymbol = c; }
 };
 
 class Parser {
 public:
-        Parser(string n="") : name(n) {}
+        Parser(string n = "") : name(n) {}
         ParseTable table;
         void build(Grammar g) {
                 unordered_set<char> non_terminals;
@@ -47,19 +46,18 @@ public:
                         for (auto s : i.second) {
                                 for (auto c : s) {
                                         bool y = std::isupper(c);
-                                        if(y) non_terminals.insert(c);
-                                        else terminals.insert(c);
+                                        if (y)
+                                                non_terminals.insert(c);
+                                        else
+                                                terminals.insert(c);
                                 }
                         }
                 }
                 // build parse table
-               table = ParseTable(non_terminals,terminals);
-                
+                table = ParseTable(non_terminals, terminals);
         }
 
-        void printTable(){
-                table.print();
-        } 
+        void printTable() { table.print(); }
 
 private:
         string name;
