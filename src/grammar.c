@@ -1,5 +1,7 @@
-#include <grammar.h>
+#include "grammar.h"
+#include "arena.h"
 #include <string.h>
+#include <stdlib.h>
 
 Grammar* grammar_create(int no_of_productions){
         int size = sizeof(Grammar) + (no_of_productions * sizeof(Production));
