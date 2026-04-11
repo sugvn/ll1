@@ -35,3 +35,7 @@ int parseTable_get(ParseTable* pt,char nt,char t){
         if(col_idx < 0 && col_idx >= MAX_T) return 0;
         return pt->table[row_idx][col_idx];
 }
+
+void parseTable_destroy(ParseTable* pt){
+        free(pt);
+}

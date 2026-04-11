@@ -11,7 +11,7 @@ typedef struct {
 } ParseTable;
 
 ParseTable* parseTable_create();
-
+void parseTable_destroy(ParseTable* pt);
 /* if at all our non terminal size grows
  handle idx calculation manually */
 int parseTable_calculate_row_idx(char nt); 
