@@ -20,4 +20,7 @@ int parseTable_calculate_row_idx(char nt);
 int parseTable_calculate_column_idx(char t); 
 
 void parseTable_set(ParseTable *pt,char nt,char t,int val);
+/* return 0 for unset or invalid
+ return production_number otherwise */
+int parseTable_get(ParseTable* pt,char nt,char t);
 #endif
