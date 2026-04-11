@@ -21,11 +21,8 @@ Grammar* grammar_create(int no_of_productions){
 
 bool grammar_add_production(Grammar* g,char nt,char* t){
         if(g->count+1 < g->no_of_productions){
-                Production* p = (Production*)arena_alloc(g->arena,sizeof(Production));
-                if(!p) return false;
-                p->t = t;
-                p->nt = nt;
-                g->productions[g->count] = *p;
+                g->productions[g->count].t = t;
+                g->productions[g->count].nt = nt;
                 g->count++;
                 return true;
         }
