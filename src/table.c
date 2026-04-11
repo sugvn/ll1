@@ -21,18 +21,18 @@ int parseTable_calculate_column_idx(char t){
 
 void parseTable_set(ParseTable *pt,char nt,char t,int val){
         int row_idx = parseTable_calculate_row_idx(nt);
-        if(row_idx < 0 && row_idx >= MAX_NT) return;
+        if(row_idx < 0 || row_idx >= MAX_NT) return;
         int col_idx = parseTable_calculate_column_idx(t);
-        if(col_idx < 0 && col_idx >= MAX_T) return;
+        if(col_idx < 0 || col_idx >= MAX_T) return;
         pt->table[row_idx][col_idx] = val;
 
 }
 
 int parseTable_get(ParseTable* pt,char nt,char t){
         int row_idx = parseTable_calculate_row_idx(nt);
-        if(row_idx < 0 && row_idx >= MAX_NT) return 0;
+        if(row_idx < 0 || row_idx >= MAX_NT) return 0;
         int col_idx = parseTable_calculate_column_idx(t);
-        if(col_idx < 0 && col_idx >= MAX_T) return 0;
+        if(col_idx < 0 || col_idx >= MAX_T) return 0;
         return pt->table[row_idx][col_idx];
 }
 
