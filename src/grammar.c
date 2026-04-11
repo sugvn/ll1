@@ -30,3 +30,8 @@ bool grammar_add_production(Grammar* g,char nt,char* t){
         }
         return false;
 }
+
+
+void grammar_destroy(Grammar *g){
+        arena_dealloc(g->arena);
+}
