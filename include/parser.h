@@ -9,6 +9,7 @@
          ParseTable* table;
  } Parser;
 
+// Public facing api
 /* the given grammar should be free of left recursion 
  and should be left factored and is a valid grammar */
 Parser* parser_create(Grammar* g);
@@ -16,5 +17,11 @@ Parser* parser_create(Grammar* g);
 void parser_build(Parser* p);
 // parses the given input against the grammar using 1 token look ahead
 bool parser_parse(char* input);
+
+// Private helpers
+bool parser_parseable(Grammar* g);
+bool parser_is_valid_grammar(Grammar *g);
+bool parser_is_left_recursive(Grammar* g);
+bool parser_is_left_factorable(Grammar* g);
 
 #endif
