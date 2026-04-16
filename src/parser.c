@@ -4,21 +4,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-Parser* parser_create(Grammar* g){
-        Parser* p = (Parser*)malloc(sizeof(Parser));
-        if(!p) return NULL;
+void parser_init(Parser *p, Grammar *g){
+        if(!p) return;
+        if(!g) return;
         p->grammar = g;
-        p->table = parseTable_create();
-        if(!p->table){
-                free(p);
-                return NULL;
-        }
-        return p;
-} 
-
-
-void parser_build(Parser* p){
 }
 
+bool _parser_is_parseable(Parser *p){
+        bool valid = grammar_is_valid(p->grammar);
+        bool left_recursive = grammar_is_left_recursive(p->grammar);
+        bool left_factorable = grammar_is_left_factorable(p->grammar);
+        return valid && !left_recursive && !left_factorable;
+}
 
-bool parser_parse(char* input){}
