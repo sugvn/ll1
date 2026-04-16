@@ -10,17 +10,17 @@ typedef struct {
         int table[MAX_NT][MAX_T];
 } ParseTable;
 
-ParseTable* parseTable_create();
-void parseTable_destroy(ParseTable* pt);
-/* if at all our non terminal size grows
- handle idx calculation manually */
-int parseTable_calculate_row_idx(char nt); 
-/* if at all our terminal size grows
- handle idx calculation manually */
-int parseTable_calculate_column_idx(char t); 
-
 void parseTable_set(ParseTable *pt,char nt,char t,int val);
 /* return 0 for unset or invalid
  return production_number otherwise */
 int parseTable_get(ParseTable* pt,char nt,char t);
+
+// Private helpers
+
+/* if at all our non terminal size grows
+ handle idx calculation manually */
+int _parseTable_calculate_row_idx(ParseTable* pt,char nt); 
+/* if at all our terminal size grows
+ handle idx calculation manually */
+int _parseTable_calculate_column_idx(ParseTable* pt,char t); 
 #endif
