@@ -1,24 +1,23 @@
 #ifndef PARSER_GRAMMAR_IMPLEMENTATION
 #define PARSER_GRAMMAR_IMPLEMENTATION
+#define MAX_PRODUCTIONS 32
 
-#include "arena.h"
+#include "str.h"
 #include <stdbool.h>
 
 typedef struct {
         char nt;
-        char* t;
+        Str t;
 } Production;
 
 typedef struct {
-        Production *productions;
+        Production productions[MAX_PRODUCTIONS];
         char startSymbol;
-        int count;
         int no_of_productions;
-        Arena* arena;
 } Grammar;
 
-Grammar* grammar_create(int no_of_productions);
+void grammar_init(Grammar *g,int no_of_productions);
 void grammar_destroy(Grammar* g);
-bool grammar_add_production(Grammar* g,char nt,char* t); //return false if error , true if success
+void grammar_add_production(Grammar *g,char nt,Str t); 
 
 #endif
