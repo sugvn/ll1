@@ -20,7 +20,7 @@ void grammar_init(Grammar *g,int no_of_productions);
 void grammar_destroy(Grammar* g);
 void grammar_add_production(Grammar *g,char nt,Str t); 
 // all Non terminals should have atleast one terminal in their first set
-bool gramar_is_valid(Grammar *g);
+bool grammar_is_valid(Grammar *g);
 // a non terminal should not produce itself as a prefix in its production
 bool grammar_is_left_recursive(Grammar* g);
 // no two productions of a same Non terminal should have same prefix
