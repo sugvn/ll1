@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stddef.h>
 #include<stdio.h>
 #include<stdlib.h>
@@ -75,4 +76,11 @@ void vec_str_free(vec_str* vector){
         free(vector->ptr);
         vector->ptr = NULL;
         vector->size = vector->capacity = 0;
+}
+
+bool vec_str_is_empty(vec_str *vector){
+        if(!vector) return true;
+        if(!vector->ptr) return true;
+        if(vector->size==0) return true;
+        return false;
 }
