@@ -3,6 +3,7 @@
 #include "grammar.h"
 #include "str.h"
 #include "dynamic_array.h"
+#include "dynamic_array_str.h"
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -10,21 +11,33 @@
 
 int* build_nullable_set(Grammar *grammar) {
         if (!grammar) return NULL;
-        Production *p = grammar->productions;
+
+        vec_str *productions = grammar->productions;
         int n = grammar->no_of_productions;
-        if (!p || n<=0) return NULL;
+        char* non_terminals = grammar->non_terminals;
+        int n_non_terminals = grammar->n_non_terminals;
 
-        int* epsl = calloc(26,sizeof(int));
-        if(!epsl) return NULL;
+        if (!productions || !non_terminals || n<=0) return NULL;
 
-        // find productions that produce epsilon by itself
-        for(int i=0;i<n;i++) {
-                char nt = p[i].nt;
-                Str rhs = p[i].rhs;        
-                bool is_null = str_eq(rhs,STR("!"));
-                if (is_null) {
-                        epsl[nt - 'A'] = 1;
-                } 
+        int *epsl = calloc(26, sizeof(int));
+        if (!epsl) return NULL;
+
+        // find non terminals that produce epsilon by itself
+        for(int i=0;i<n_non_terminals;i++) {
+                char non_terminal = non_terminals[i];
+                vec_str production = productions[non_terminal - 'A'];
+                if(vec_str_is_empty(&production)) continue;
+                int n_strings = production.size;
+                for(int j=0;j<n_strings;j++){
+                        Str rhs = production.ptr[j];
+                        if(!rhs.val) {
+                                perror("String not initialised");
+                                exit(EXIT_FAILURE);
+                        }
+                        if(rhs.len==1 && rhs.val[0]=='!'){
+                                epsl[non_terminal - 'A'] = 1;
+                        }
+                }
         }
 
         bool changed = true;
@@ -34,42 +47,52 @@ int* build_nullable_set(Grammar *grammar) {
                 changed = false;
 
                 // iterate over all productions
-                for(int i=0;i<n;i++) {
-                        char nt = p[i].nt;
-                        Str rhs = p[i].rhs;        
+                for(int i=0;i<n_non_terminals;i++) {
+                        char nt = non_terminals[i];
                         if(epsl[nt - 'A']) continue;
-                        int rhslen = rhs.len;
+                        vec_str production = productions[nt - 'A'];
+                        if(vec_str_is_empty(&production)) continue;
+                        int n_strings = production.size;
+                        for(int j=0;j<n_strings;j++){
+                                Str rhs = production.ptr[j];
+                                if(!rhs.val) {
+                                        perror("String not initialised");
+                                        exit(EXIT_FAILURE);
+                                }
+                                int rhslen = rhs.len;
 
-                        // check nullability of rhs of one production
-                        for(int j=0;j<rhslen;j++){
-                                char c = str_at(rhs, j);
+                                // check nullability of rhs of one production
+                                for(int k=0;k<rhslen;k++){
+                                        char c = str_at(rhs, k);
 
-                                // if c is epsilon
-                                if(c=='!') {
-                                        if (j==rhslen-1) {
+                                        // if c is epsilon
+                                        if(c=='!') {
+                                                if (k==rhslen-1) {
+                                                        epsl[nt-'A'] = 1;
+                                                        // epsl[] is changed
+                                                        changed = true;
+                                                }
+                                                continue;
+                                        }
+
+                                        // atleast one terminal found
+                                        if(!isupper(c)) break;
+
+                                        // if non terminal
+                                        // if atleast one non terminal is not nullable,production is not nullable,break
+                                        if(epsl[c-'A']==0) break;
+                                        // if non terminal is nullable,check remaining
+                                        
+                                        // if loop continues until last element of rhs ,then the whole rhs is
+                                        // nullable,thus set production as nullable
+                                        if(k==rhslen-1){
                                                 epsl[nt-'A'] = 1;
                                                 // epsl[] is changed
                                                 changed = true;
                                         }
-                                        continue;
-                                }
-
-                                // atleast one terminal found
-                                if(!isupper(c)) break;
-
-                                // if non terminal
-                                // if atleast one non terminal is not nullable,production is not nullable,break
-                                if(epsl[c-'A']==0) break;
-                                // if non terminal is nullable,check remaining
-                                
-                                // if loop continues until last element of rhs ,then the whole rhs is
-                                // nullable,thus set production as nullable
-                                if(j==rhslen-1){
-                                        epsl[nt-'A'] = 1;
-                                        // epsl[] is changed
-                                        changed = true;
                                 }
                         }
+
                 }
         }
         return epsl;
