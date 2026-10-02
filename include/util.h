@@ -2,8 +2,11 @@
 #define LL1_PARSER_UTIL
 #include "grammar.h"
 #include "str.h"
+#include "dynamic_array.h"
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int* build_nullable_set(Grammar *grammar) {
         if (!grammar) return NULL;
@@ -70,5 +73,57 @@ int* build_nullable_set(Grammar *grammar) {
                 }
         }
         return epsl;
+}
+
+bool is_grammar_valid(Grammar* g){
+        if(!g || g->no_of_productions==0) return false;
+        Production* productions = g->productions;
+        if(!productions) return false;
+        int n = g->no_of_productions;
+
+        // build a set of all non terminals reachable from start symbol
+        int reachable[26] = {0};
+        vec_int start_symbol_productions_index;
+
+        if(vec_init(&start_symbol_productions_index, MAX_PRODUCTIONS)!=0){
+                perror("Error initialising vector");
+                exit(EXIT_FAILURE);
+        }
+
+        //find the productions of start symbol S
+        for (int i=0;i<n;i++){
+                if(productions[i].nt == 'S'){
+                        vec_append(&start_symbol_productions_index, i);
+                }
+        }
+        
+        if(vec_is_empty(&start_symbol_productions_index)){
+                return false; 
+        }
+        int start_productions_count = start_symbol_productions_index.size;
+
+        // build directly reachable from start symbol S
+        for (int j=0; j < start_productions_count; j++) {
+                Str s = (productions[vec_get(&start_symbol_productions_index,j)]).rhs;
+                int s_len = s.len;
+
+                for(int k=0;k<s_len;k++){
+                        char c = str_at(s,k);
+                        if(!isupper(c)) {
+                                continue;
+                        }
+                        reachable[c-'A']=1;
+                }
+        }
+
+        // build other reachables from directly reachables
+        bool changed=true;
+        while(changed){
+                changed = false;
+                for(int j=0;j<26;j++){
+
+                }
+        }
+
 }
 #endif
