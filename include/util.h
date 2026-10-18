@@ -100,6 +100,48 @@ int* build_nullable_set(Grammar *grammar) {
 
 bool is_grammar_valid(Grammar* g){
         if(!g || g->no_of_productions==0) return false;
+        size_t n_non_terminals = g->n_non_terminals;
+        char* non_terminals = g->non_terminals;
+        if(n_non_terminals==0) return false;
+
+        // check if Start symbol S exists
+        bool s_found = false;
+        for(int i=0;i<n_non_terminals;i++){
+                if(non_terminals[i]=='S'){
+                        s_found = true;
+                        break;
+                }
+        }
+        if(!s_found) {
+                printf("No start symbol");
+                return false;
+        }
+
+        // check if all non terminals have a production
+        for(int i=0;i<n_non_terminals;i++){
+                char non_terminal = non_terminals[i];
+                vec_str productions = g->productions[non_terminal - 'A'];
+                if(productions.size==0) {
+                        printf("\n %c has no production",non_terminal);
+                        return false;
+                }
+        }
+
+        // check if all non terminals are reachable from reachable from S
+        // (start from S,choose a production,mark it as visited,parse all the non terminals from the
+        // production,for each non terminal continue the same process until all productions of the
+        // grammar are visited)
+
+
+
+        // check if all non terminals are producing
+        // (find the directly producing non terminals,then find the non terminals that produce these
+        // non terminals and add them as producing too,then continue as long as the producing list
+        // changes)
+        // (if all non terminals are producing,then valid,else invalid)
+
+
+
         Production* productions = g->productions;
         if(!productions) return false;
         int n = g->no_of_productions;
@@ -148,5 +190,22 @@ bool is_grammar_valid(Grammar* g){
                 }
         }
 
+}
+
+
+vec_int parse_non_terminals(Str rhs){
+        if(!rhs.val) {
+                perror("RHS string is NULL");
+                exit(EXIT_FAILURE);
+        }
+
+        vec_int non_terminals;
+        vec_init(&non_terminals,rhs.len);
+        for(int i=0;i<rhs.len;i++){
+                if(isupper(rhs.val[i])){
+                        vec_append(&non_terminals, (int)rhs.val[i]);
+                }
+        }
+        return non_terminals;
 }
 #endif
